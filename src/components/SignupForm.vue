@@ -3,7 +3,7 @@
     <div class="container signup bg-info">
       <h1 class="text-center text-white">SIGNUP</h1>
       <hr />
-      <form  @submit.prevent="handleSignup">
+      <form @submit.prevent="handleSignup">
         <div class="form-group m-3">
           <label for="name">Name </label>
           <input
@@ -47,13 +47,7 @@
             placeholder="Confirm your password "
           />
         </div>
-        <button
-          type="submit"
-        
-          class="btn btn-primary m-3"
-        >
-          Submit
-        </button>
+        <button type="submit" class="btn btn-primary m-3">Submit</button>
       </form>
       <hr />
       <p class="float-end">
@@ -64,45 +58,43 @@
 </template>
 
 <script>
-import axios from 'axios';
-import Config from '@/config';
+import axios from "axios";
+import Config from "@/config";
 
 const { baseUrl } = Config;
 
 export default {
-    name: "SignupForm",
-    data() {
-        return {
-        name: '',
-        email: '',
-        password: '',
-        };
+  name: "SignupForm",
+  data() {
+    return {
+      name: "",
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    async handleSignup() {
+      const data = {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+      };
+      console.log(data);
+      try {
+        const response = await axios.post(`${baseUrl}/api/auth/register`, data);
+        console.log(response);
+        alert("Registered Successfully !");
+        setTimeout(() => {
+          this.$router.push("/login");
+        }, 1000);
+      }
+      catch (error) {
+        alert(error.message);
+        console.log(error);
+      }
     },
-    methods : {
-        async  handleSignup() {
-            const data = {
-
-                name : this.name,
-                email : this.email,
-                password : this.password 
-            }
-            console.log(data);
-          try{
-
-            const response = await axios.post( `${baseUrl}/api/auth/register`, data);
-            console.log(response);
-            alert("Registered Successfully !");
-             setTimeout(()=>{
-               this.$router.push("/login");
-            },1000)
-          }
-          catch(error){
-            console.log( error );
-          }
-
-}
-    },
-}
+  },
+};
 </script>
 
 <style scoped>
